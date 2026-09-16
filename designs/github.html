@@ -40,6 +40,7 @@
             --font-main: 'Inter', sans-serif;
             
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -51,7 +52,7 @@
 
         html, body {
             max-width: 100%;
-            overflow-x: clip; /* Modern fix to ensure sticky elements never break */
+            overflow-x: clip; 
         }
 
         body {
@@ -156,16 +157,123 @@
             color: var(--text-primary);
         }
 
+        /* --- PROFILE DROPDOWN MENU --- */
+        .profile-dropdown-wrapper {
+            position: relative;
+        }
+
+        .profile-nav-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: border-color var(--transition-fast), transform var(--transition-fast);
+        }
+
+        .profile-nav-img:hover {
+            border-color: var(--border-focus);
+            transform: scale(1.05);
+        }
+
+        .profile-nav-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-menu {
+            position: absolute;
+            top: calc(100% + 16px);
+            right: 0;
+            width: 260px;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+            padding: 8px 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 1001;
+            
+            /* Animation properties */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px) scale(0.95);
+            transform-origin: top right;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .profile-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .profile-menu-header {
+            padding: 8px 16px 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 14px;
+        }
+
+        .profile-menu-header span {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .profile-menu-header strong {
+            font-size: 15px;
+            color: var(--text-primary);
+        }
+
+        .profile-menu hr {
+            border: none;
+            border-top: 1px solid var(--border-subtle);
+            margin: 6px 0;
+        }
+
+        .profile-menu .menu-item {
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: background var(--transition-fast);
+        }
+
+        .profile-menu .menu-item i {
+            font-size: 18px;
+            color: var(--text-secondary);
+            transition: color var(--transition-fast);
+        }
+
+        .profile-menu .menu-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            text-decoration: none;
+        }
+
+        .profile-menu .menu-item:hover i {
+            color: var(--text-primary);
+        }
+
+        /* --- LAYOUT --- */
         .layout {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 96px 24px 40px 24px; /* Top padding clears the fixed navbar */
+            padding: 96px 24px 40px 24px; 
             display: grid;
             grid-template-columns: 280px 1fr;
             gap: 48px;
         }
 
-        /* --- PROFILE SIDEBAR (Sticky on Desktop!) --- */
+        /* --- PROFILE SIDEBAR --- */
         .profile-sidebar {
             display: flex;
             flex-direction: column;
@@ -287,7 +395,7 @@
             gap: 24px;
             border-bottom: 1px solid var(--border-subtle);
             position: sticky;
-            top: 57px; /* Sits perfectly below the 57px tall fixed navbar */
+            top: 57px; 
             background: var(--bg-base);
             z-index: 10;
             padding-bottom: 0;
@@ -546,7 +654,7 @@
         @media (max-width: 768px) {
             .navbar { display: none; }
 
-            /* STICKY MOBILE TOP NAVBAR (Fixed) */
+            /* STICKY MOBILE TOP NAVBAR */
             .mobile-top-nav {
                 display: flex;
                 position: fixed;
@@ -578,7 +686,6 @@
                 gap: 18px;
             }
 
-            /* NOTIFICATION DOT */
             .notification-wrapper {
                 position: relative;
                 display: flex;
@@ -596,7 +703,7 @@
                 border: 2px solid var(--bg-base);
             }
 
-            /* SLIDE-OUT MOBILE SIDE MENU (DRAWER) */
+            /* SLIDE-OUT MOBILE DRAWER */
             .drawer-overlay {
                 display: block;
                 position: fixed;
@@ -604,7 +711,7 @@
                 background: rgba(0, 0, 0, 0.6);
                 backdrop-filter: blur(4px);
                 -webkit-backdrop-filter: blur(4px);
-                z-index: 9990; /* High z-index to stay above fixed nav */
+                z-index: 9990; 
                 opacity: 0;
                 pointer-events: none;
                 transition: opacity 0.3s ease;
@@ -690,12 +797,19 @@
                 color: var(--text-primary);
             }
 
-            /* Mobile Bottom Nav */
             .mobile-bottom-nav {
                 display: flex;
                 background: rgba(5, 5, 5, 0.95);
                 border-top: 1px solid rgba(255, 255, 255, 0.05);
                 padding-bottom: max(16px, env(safe-area-inset-bottom));
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1000;
+                padding: 12px 24px calc(12px + env(safe-area-inset-bottom));
+                justify-content: space-between;
+                align-items: center;
             }
 
             body {
@@ -705,7 +819,7 @@
 
             .layout {
                 grid-template-columns: 1fr;
-                padding: 70px 20px 20px 20px; /* 70px offset ensures content starts below mobile fixed navbar */
+                padding: 70px 20px 20px 20px; 
                 gap: 28px;
                 width: 100%;
                 box-sizing: border-box;
@@ -724,7 +838,7 @@
                 width: 100%;
                 box-sizing: border-box;
                 position: relative;
-                top: 0; /* Reset desktop sticky behavior */
+                top: 0; 
             }
 
             .profile-sidebar::before {
@@ -815,9 +929,7 @@
                 color: var(--text-secondary);
             }
 
-            .followers-stats span i {
-                display: none; 
-            }
+            .followers-stats span i { display: none; }
 
             .followers-stats span strong {
                 font-size: 20px;
@@ -825,9 +937,7 @@
                 color: var(--text-primary);
             }
 
-            .profile-details {
-                display: none;
-            }
+            .profile-details { display: none; }
 
             .btn-primary {
                 padding: 0;
@@ -841,12 +951,10 @@
                 z-index: 1;
             }
 
-            .content-area {
-                gap: 28px;
-            }
+            .content-area { gap: 28px; }
 
             .tabs {
-                top: 50px; /* Offset accurately for the sticky mobile top nav */
+                top: 50px; 
                 padding: 12px 20px;
                 background: rgba(0, 0, 0, 0.85);
                 backdrop-filter: blur(24px);
@@ -861,9 +969,7 @@
                 z-index: 90;
             }
 
-            .tabs::-webkit-scrollbar {
-                display: none;
-            }
+            .tabs::-webkit-scrollbar { display: none; }
             .tabs { scrollbar-width: none; }
 
             .tab {
@@ -918,6 +1024,30 @@
             .section-title {
                 font-size: 18px;
                 font-weight: 700;
+            }
+            
+            .nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                color: var(--text-secondary);
+                font-size: 10px;
+                text-decoration: none;
+                transition: var(--transition);
+            }
+
+            .nav-item i {
+                font-size: 24px;
+            }
+
+            .nav-item.active {
+                color: var(--text-primary);
+            }
+            
+            .nav-item:hover {
+                text-decoration: none;
+                color: var(--text-primary);
             }
         }
     </style>
@@ -974,7 +1104,7 @@
         </div>
     </aside>
 
-    <!-- Desktop Navbar (Fixed to top) -->
+    <!-- DESKTOP NAVBAR (Fixed to top) -->
     <nav class="navbar">
         <div class="nav-left">
             <i class="ph-fill ph-github-logo nav-logo"></i>
@@ -987,9 +1117,32 @@
         <div class="nav-actions">
             <button class="icon-btn"><i class="ph ph-bell"></i></button>
             <button class="icon-btn"><i class="ph ph-plus"></i></button>
-            <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-subtle); cursor: pointer;">
-                <img src="./assets/images/mms.jpg" alt="User" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'" style="width: 100%; height: 100%; object-fit: cover;">
+            
+            <!-- Desktop Profile Dropdown Area -->
+            <div class="profile-dropdown-wrapper" id="desktopProfileBtn">
+                <div class="profile-nav-img">
+                    <img src="./assets/images/mms.jpg" alt="User" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'">
+                </div>
+                
+                <!-- The Animated Submenu -->
+                <div class="profile-menu" id="desktopProfileMenu">
+                    <div class="profile-menu-header">
+                        <span>Signed in as</span>
+                        <strong>MMSSB</strong>
+                    </div>
+                    <hr>
+                    <a href="#" class="menu-item"><i class="ph ph-smiley"></i> Set status</a>
+                    <hr>
+                    <a href="#" class="menu-item"><i class="ph ph-user"></i> Your profile</a>
+                    <a href="#" class="menu-item"><i class="ph ph-book-bookmark"></i> Your repositories</a>
+                    <a href="#" class="menu-item"><i class="ph ph-star"></i> Your stars</a>
+                    <a href="#" class="menu-item"><i class="ph ph-code"></i> Your gists</a>
+                    <hr>
+                    <a href="#" class="menu-item"><i class="ph ph-gear"></i> Settings</a>
+                    <a href="#" class="menu-item"><i class="ph ph-sign-out"></i> Sign out</a>
+                </div>
             </div>
+            
         </div>
     </nav>
 
@@ -1201,7 +1354,6 @@
 
             for (let i = 0; i < totalCells; i++) {
                 const cell = document.createElement('div');
-                
                 let rand = Math.random();
                 let level = 0;
                 
@@ -1211,14 +1363,12 @@
                 else if (rand > 0.65) level = 1;
 
                 cell.className = `contrib-cell contrib-level-${level}`;
-                
                 const date = new Date();
                 date.setDate(date.getDate() - (totalCells - i));
                 const dateString = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                 
                 let contribText = level === 0 ? 'No contributions' : `${Math.floor(Math.random() * 5 + 1 * level)} contributions`;
                 cell.title = `${contribText} on ${dateString}`;
-
                 graph.appendChild(cell);
             }
 
@@ -1231,7 +1381,7 @@
                 });
             });
 
-            // Mobile Sidebar Drawer Logic
+            // --- Mobile Sidebar Drawer Logic ---
             const menuBtn = document.getElementById('mobileMenuBtn');
             const closeBtn = document.getElementById('closeDrawerBtn');
             const drawer = document.getElementById('mobileDrawer');
@@ -1252,6 +1402,22 @@
             menuBtn.addEventListener('click', openDrawer);
             closeBtn.addEventListener('click', closeDrawer);
             overlay.addEventListener('click', closeDrawer);
+
+            // --- Desktop Profile Dropdown Logic ---
+            const profileBtn = document.getElementById('desktopProfileBtn');
+            const profileMenu = document.getElementById('desktopProfileMenu');
+
+            profileBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Stop click from immediately bubbling to document
+                profileMenu.classList.toggle('active');
+            });
+
+            // Close the menu when clicking anywhere else on the document
+            document.addEventListener('click', (e) => {
+                if (!profileBtn.contains(e.target)) {
+                    profileMenu.classList.remove('active');
+                }
+            });
         });
     </script>
 </body>
