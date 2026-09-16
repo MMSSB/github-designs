@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MMS | GitHub Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Using Phosphor Icons for a crisp, modern icon set -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        :root {
+            /* 2026 Modern Dark Theme Palette */
+            --bg-base: #050505;
+            --bg-surface: #111111;
+            --bg-surface-hover: #1a1a1a;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-focus: rgba(255, 255, 255, 0.2);
+            
+            --text-primary: #f5f5f5;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            
+            --accent-primary: #58a6ff;
+            --accent-glow: rgba(88, 166, 255, 0.15);
+            
+            --contrib-0: #161b22;
+            --contrib-1: #0e4429;
+            --contrib-2: #006d32;
+            --contrib-3: #26a641;
+            --contrib-4: #39d353;
+            
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            
+            --font-main: 'Inter', sans-serif;
+            
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            max-width: 100%;
+            overflow-x: clip; /* Modern fix to ensure sticky elements never break */
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- DESKTOP NAVBAR (Fixed to always stick) --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-logo {
+            font-size: 32px;
+            color: var(--text-primary);
+        }
+
+        .search-bar {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-full);
+            padding: 6px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 280px;
+            transition: var(--transition);
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            outline: none;
+            width: 100%;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+        }
+
+        .layout {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 96px 24px 40px 24px; /* Top padding clears the fixed navbar */
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 48px;
+        }
+
+        /* --- PROFILE SIDEBAR (Sticky on Desktop!) --- */
+        .profile-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            position: sticky;
+            top: 96px; 
+            height: max-content;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 0 40px rgba(255,255,255,0.05);
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .status-badge {
+            position: absolute;
+            bottom: 8%;
+            right: 8%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            padding: 8px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 2;
+        }
+
+        .profile-info h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-info h2 {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .pronoun-badge {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .bio {
+            color: var(--text-primary);
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg-base);
+            border: none;
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        .followers-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .followers-stats span strong {
+            color: var(--text-primary);
+        }
+
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .profile-details li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- CONTENT AREA & TABS --- */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            min-width: 0;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 24px;
+            border-bottom: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 57px; /* Sits perfectly below the 57px tall fixed navbar */
+            background: var(--bg-base);
+            z-index: 10;
+            padding-bottom: 0;
+        }
+
+        .tab {
+            padding: 12px 0;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .tab:hover {
+            color: var(--text-primary);
+        }
+
+        .tab.active {
+            color: var(--text-primary);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-primary);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .badge {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+        }
+
+        /* --- BENTO GRID & CARDS --- */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .customize-link {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .customize-link:hover {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .bento-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-card:hover {
+            border-color: var(--border-focus);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, var(--accent-glow), transparent 60%);
+            opacity: 0;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        .repo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .repo-title-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .repo-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--accent-primary);
+        }
+
+        .drag-handle {
+            color: var(--text-muted);
+            cursor: grab;
+            font-size: 20px;
+            transition: color var(--transition);
+        }
+
+        .drag-handle:hover {
+            color: var(--text-primary);
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .repo-desc {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 16px;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .repo-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .lang-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .lang-html { background-color: #e34c26; }
+        .lang-js { background-color: #f1e05a; }
+
+        /* Contribution Graph */
+        .contribution-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .graph-wrapper {
+            overflow-x: auto;
+            padding-bottom: 12px;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .graph-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .contrib-graph {
+            display: grid;
+            grid-template-columns: repeat(53, 1fr);
+            gap: 4px;
+            min-width: 750px;
+        }
+
+        .contrib-cell {
+            width: 11px;
+            height: 11px;
+            border-radius: 2px;
+            background-color: var(--contrib-0);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.1s;
+        }
+        
+        .contrib-cell:hover {
+            transform: scale(1.5);
+            border-color: rgba(255,255,255,0.5);
+            z-index: 2;
+        }
+
+        .contrib-level-1 { background-color: var(--contrib-1); }
+        .contrib-level-2 { background-color: var(--contrib-2); }
+        .contrib-level-3 { background-color: var(--contrib-3); }
+        .contrib-level-4 { background-color: var(--contrib-4); }
+
+        .contrib-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .legend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* --- MOBILE SPECIFIC STYLES --- */
+        .mobile-top-nav, .mobile-bottom-nav, .mobile-drawer, .drawer-overlay {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .layout { gap: 32px; }
+        }
+
+        @media (max-width: 768px) {
+            .navbar { display: none; }
+
+            /* STICKY MOBILE TOP NAVBAR (Fixed) */
+            .mobile-top-nav {
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1000;
+                background: rgba(5, 5, 5, 0.85);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border-bottom: 1px solid var(--border-subtle);
+                padding: 12px 20px;
+                justify-content: space-between;
+                align-items: center;
+                box-sizing: border-box;
+            }
+
+            .mobile-top-nav .icon-btn {
+                border: none;
+                background: transparent;
+                padding: 0;
+                width: auto;
+                height: auto;
+            }
+
+            .mobile-top-nav .nav-icons {
+                display: flex;
+                align-items: center;
+                gap: 18px;
+            }
+
+            /* NOTIFICATION DOT */
+            .notification-wrapper {
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+
+            .notification-dot {
+                position: absolute;
+                top: 0px;
+                right: 2px;
+                width: 8px;
+                height: 8px;
+                background-color: var(--accent-primary);
+                border-radius: 50%;
+                border: 2px solid var(--bg-base);
+            }
+
+            /* SLIDE-OUT MOBILE SIDE MENU (DRAWER) */
+            .drawer-overlay {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+                z-index: 9990; /* High z-index to stay above fixed nav */
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+
+            .drawer-overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .mobile-drawer {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 80%;
+                max-width: 320px;
+                height: 100vh;
+                background: var(--bg-surface);
+                border-right: 1px solid var(--border-subtle);
+                z-index: 10000;
+                transform: translateX(-100%);
+                transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+                overflow-y: auto;
+            }
+
+            .mobile-drawer.active {
+                transform: translateX(0);
+            }
+
+            .drawer-header {
+                padding: 24px 20px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                border-bottom: 1px solid var(--border-subtle);
+            }
+
+            .drawer-header img {
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 1px solid var(--border-subtle);
+            }
+
+            .drawer-user h3 {
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--text-primary);
+            }
+
+            .drawer-user p {
+                font-size: 14px;
+                color: var(--text-secondary);
+            }
+
+            .drawer-links {
+                padding: 16px 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .drawer-links a {
+                padding: 14px 24px;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                color: var(--text-secondary);
+                font-size: 15px;
+                font-weight: 500;
+                text-decoration: none;
+                transition: background var(--transition);
+            }
+
+            .drawer-links a i {
+                font-size: 20px;
+            }
+
+            .drawer-links a:hover {
+                background: rgba(255, 255, 255, 0.05);
+                color: var(--text-primary);
+            }
+
+            /* Mobile Bottom Nav */
+            .mobile-bottom-nav {
+                display: flex;
+                background: rgba(5, 5, 5, 0.95);
+                border-top: 1px solid rgba(255, 255, 255, 0.05);
+                padding-bottom: max(16px, env(safe-area-inset-bottom));
+            }
+
+            body {
+                background-color: #000;
+                padding-bottom: 90px; 
+            }
+
+            .layout {
+                grid-template-columns: 1fr;
+                padding: 70px 20px 20px 20px; /* 70px offset ensures content starts below mobile fixed navbar */
+                gap: 28px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .profile-sidebar {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                padding: 16px 0 0 0;
+                gap: 16px;
+                box-shadow: none;
+                width: 100%;
+                box-sizing: border-box;
+                position: relative;
+                top: 0; /* Reset desktop sticky behavior */
+            }
+
+            .profile-sidebar::before {
+                content: '';
+                position: absolute;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 160px;
+                height: 160px;
+                background: var(--accent-primary);
+                filter: blur(70px);
+                opacity: 0.15;
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            .avatar-container {
+                width: 116px;
+                height: 116px;
+                margin-bottom: 4px;
+                border: 3px solid #000;
+                box-shadow: 0 0 0 1px var(--border-focus);
+                z-index: 1;
+            }
+
+            .status-badge {
+                bottom: 2%;
+                right: 2%;
+                font-size: 18px;
+                padding: 6px;
+                background: #111;
+                border: 2px solid #000;
+            }
+
+            .profile-info {
+                width: 100%;
+                z-index: 1;
+            }
+            
+            .profile-info h1 {
+                font-size: 32px;
+                font-weight: 800;
+                letter-spacing: -1px;
+                line-height: 1.1;
+            }
+
+            .profile-info h2 {
+                font-size: 16px;
+                margin-top: 4px;
+                margin-bottom: 8px;
+                color: var(--text-secondary);
+            }
+
+            .bio {
+                font-size: 15px;
+                margin-bottom: 12px;
+                line-height: 1.5;
+                color: #e0e0e0;
+                z-index: 1;
+            }
+
+            .followers-stats {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+                margin: 8px 0 16px 0;
+                z-index: 1;
+            }
+
+            .followers-stats span:nth-child(2) {
+                display: none; 
+            }
+
+            .followers-stats span:nth-child(1), 
+            .followers-stats span:nth-child(3) {
+                flex: 1;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                padding: 16px 12px;
+                border-radius: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                font-size: 13px;
+                color: var(--text-secondary);
+            }
+
+            .followers-stats span i {
+                display: none; 
+            }
+
+            .followers-stats span strong {
+                font-size: 20px;
+                font-weight: 700;
+                color: var(--text-primary);
+            }
+
+            .profile-details {
+                display: none;
+            }
+
+            .btn-primary {
+                padding: 0;
+                height: 52px;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: 99px; 
+                background: #fff;
+                color: #000;
+                box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+                z-index: 1;
+            }
+
+            .content-area {
+                gap: 28px;
+            }
+
+            .tabs {
+                top: 50px; /* Offset accurately for the sticky mobile top nav */
+                padding: 12px 20px;
+                background: rgba(0, 0, 0, 0.85);
+                backdrop-filter: blur(24px);
+                -webkit-backdrop-filter: blur(24px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                margin: 0 -20px;
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                gap: 12px;
+                z-index: 90;
+            }
+
+            .tabs::-webkit-scrollbar {
+                display: none;
+            }
+            .tabs { scrollbar-width: none; }
+
+            .tab {
+                scroll-snap-align: start;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                border-radius: 99px;
+                padding: 10px 20px;
+                white-space: nowrap;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .tab.active {
+                background: var(--text-primary);
+                color: #000;
+                border-color: var(--text-primary);
+            }
+
+            .tab.active i { color: #000; }
+            .tab.active .badge {
+                 background: rgba(0,0,0,0.1);
+                 border-color: transparent;
+                 color: #000;
+            }
+            .tab.active::after { display: none; }
+
+            .bento-grid {
+                display: grid;
+                grid-template-columns: 1fr; 
+                gap: 16px;
+                padding-bottom: 0;
+                margin: 0; 
+            }
+
+            .bento-card {
+                width: 100%; 
+                border-radius: 20px;
+                background: #111;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+            
+            .contribution-card {
+                padding: 20px 16px;
+                border-radius: 20px;
+                width: 100%;
+                box-sizing: border-box;
+                background: #111;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+            
+            .section-title {
+                font-size: 18px;
+                font-weight: 700;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- MOBILE TOP FIXED NAVBAR -->
+    <nav class="mobile-top-nav">
+        <div style="display:flex; align-items:center; gap:16px;">
+            <button class="icon-btn" id="mobileMenuBtn" aria-label="Open side menu">
+                <i class="ph ph-list" style="font-size: 26px; color: var(--text-primary);"></i>
+            </button>
+            <i class="ph-fill ph-github-logo" style="font-size: 32px; color: var(--text-primary);"></i>
+        </div>
+        <div class="nav-icons">
+            <button class="icon-btn" aria-label="Search">
+                <i class="ph ph-magnifying-glass" style="font-size: 24px; color: var(--text-primary);"></i>
+            </button>
+            <button class="icon-btn" aria-label="Create new">
+                <i class="ph ph-plus" style="font-size: 24px; color: var(--text-primary);"></i>
+            </button>
+            <button class="icon-btn notification-wrapper" aria-label="Notifications">
+                <i class="ph ph-bell" style="font-size: 24px; color: var(--text-primary);"></i>
+                <span class="notification-dot"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MOBILE DRAWER (SIDE MENU) -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <aside class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <img src="./assets/images/mms.jpg" alt="MMS" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'">
+            <div class="drawer-user">
+                <h3>MMS</h3>
+                <p>MMSSB</p>
+            </div>
+            <button class="icon-btn" id="closeDrawerBtn" style="border:none; margin-left:auto; width:auto;">
+                <i class="ph ph-x" style="font-size: 22px; color: var(--text-secondary);"></i>
+            </button>
+        </div>
+        <div class="drawer-links">
+            <a href="#"><i class="ph ph-house"></i> Home</a>
+            <a href="#"><i class="ph ph-record"></i> Issues</a>
+            <a href="#"><i class="ph ph-git-pull-request"></i> Pull Requests</a>
+            <a href="#"><i class="ph ph-chat-circle"></i> Discussions</a>
+            <hr style="border: 1px solid var(--border-subtle); margin: 12px 24px;">
+            <a href="#"><i class="ph ph-book-bookmark"></i> Repositories</a>
+            <a href="#"><i class="ph ph-kanban"></i> Projects</a>
+            <a href="#"><i class="ph ph-users"></i> Organizations</a>
+            <a href="#"><i class="ph ph-star"></i> Stars</a>
+            <hr style="border: 1px solid var(--border-subtle); margin: 12px 24px;">
+            <a href="#"><i class="ph ph-gear"></i> Settings</a>
+        </div>
+    </aside>
+
+    <!-- Desktop Navbar (Fixed to top) -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <i class="ph-fill ph-github-logo nav-logo"></i>
+            <div class="search-bar">
+                <i class="ph ph-magnifying-glass" style="color: var(--text-secondary)"></i>
+                <input type="text" placeholder="Search or jump to...">
+                <div class="badge" style="background: transparent">⌘K</div>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <button class="icon-btn"><i class="ph ph-bell"></i></button>
+            <button class="icon-btn"><i class="ph ph-plus"></i></button>
+            <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-subtle); cursor: pointer;">
+                <img src="./assets/images/mms.jpg" alt="User" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+    </nav>
+
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="profile-sidebar">
+            <div class="avatar-container">
+                <img src="./assets/images/mms.jpg" alt="Profile Picture" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'">
+                <div class="status-badge">🚀</div>
+            </div>
+            
+            <div class="profile-info">
+                <h1>MMS</h1>
+                <h2>MMSSB <span class="pronoun-badge">· he/him</span></h2>
+            </div>
+
+            <div class="bio">
+                Our Dead is not Dead Until We Forgot Them 🫡
+            </div>
+
+            <button class="btn-primary">Edit profile</button>
+
+            <div class="followers-stats">
+                <span><i class="ph ph-users"></i> <strong>11</strong> followers</span>
+                <span>·</span>
+                <span><strong>90</strong> following</span>
+            </div>
+
+            <ul class="profile-details">
+                <li><i class="ph ph-graduation-cap"></i> MUST (BIS Graduate)</li>
+                <li><i class="ph ph-map-pin"></i> Egypt</li>
+                <li><i class="ph ph-link"></i> <a href="https://mmssb.github.io/" target="_blank">https://mmssb.github.io/</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <!-- Tabs -->
+            <nav class="tabs">
+                <div class="tab active"><i class="ph ph-book-open"></i> Overview</div>
+                <div class="tab"><i class="ph ph-file-code"></i> Repositories <span class="badge">5</span></div>
+                <div class="tab"><i class="ph ph-kanban"></i> Projects</div>
+                <div class="tab"><i class="ph ph-package"></i> Packages</div>
+                <div class="tab"><i class="ph ph-star"></i> Stars <span class="badge">3</span></div>
+            </nav>
+
+            <!-- Pinned Repos (Bento Grid) -->
+            <section>
+                <div class="section-header">
+                    <h3 class="section-title">Pinned</h3>
+                    <a href="#" class="customize-link">Customize your pins</a>
+                </div>
+                
+                <div class="bento-grid">
+                    <!-- Card 1 -->
+                    <div class="bento-card">
+                        <div class="repo-header">
+                            <div class="repo-title-group">
+                                <a href="https://mmssb.github.io/praytime.com/" target="_blank" class="repo-title">
+                                    <i class="ph ph-book-bookmark"></i> praytime.com
+                                </a>
+                                <span class="badge" style="color: var(--text-secondary); border-color: var(--border-subtle);">Public</span>
+                            </div>
+                            <i class="ph ph-dots-six-vertical drag-handle" title="Drag to reorder"></i>
+                        </div>
+                        <p class="repo-desc">PrayTime is a lightweight web application designed to help Muslims track prayer times accurately while staying updated with the weather. It features a beautiful, modern interface with glassmorphism...</p>
+                        <div class="repo-meta">
+                            <span class="meta-item"><span class="lang-color lang-html"></span> HTML</span>
+                            <span class="meta-item"><i class="ph ph-star"></i> 2</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bento-card">
+                        <div class="repo-header">
+                            <div class="repo-title-group">
+                                <a href="#" class="repo-title">
+                                    <i class="ph ph-book-bookmark"></i> websql
+                                </a>
+                                <span class="badge" style="color: var(--text-secondary); border-color: var(--border-subtle);">Public</span>
+                            </div>
+                            <i class="ph ph-dots-six-vertical drag-handle" title="Drag to reorder"></i>
+                        </div>
+                        <p class="repo-desc">A modern, highly responsive, browser-based SQL Server Management Studio (SSMS) simulator built entirely with Vanilla JavaScript, HTML5, and Pure CSS.</p>
+                        <div class="repo-meta">
+                            <span class="meta-item"><span class="lang-color lang-js"></span> JavaScript</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 3 -->
+                    <div class="bento-card">
+                        <div class="repo-header">
+                            <div class="repo-title-group">
+                                <a href="#" class="repo-title">
+                                    <i class="ph ph-book-bookmark"></i> linkdock
+                                </a>
+                                <span class="badge" style="color: var(--text-secondary); border-color: var(--border-subtle);">Public</span>
+                            </div>
+                            <i class="ph ph-dots-six-vertical drag-handle" title="Drag to reorder"></i>
+                        </div>
+                        <p class="repo-desc">Link Dock is a 100% serverless, zero backend "Link in Bio" builder.</p>
+                        <div class="repo-meta">
+                            <span class="meta-item"><span class="lang-color lang-html"></span> HTML</span>
+                            <span class="meta-item"><i class="ph ph-star"></i> 1</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="bento-card">
+                        <div class="repo-header">
+                            <div class="repo-title-group">
+                                <a href="#" class="repo-title">
+                                    <i class="ph ph-book-bookmark"></i> derp-studio
+                                </a>
+                                <span class="badge" style="color: var(--text-secondary); border-color: var(--border-subtle);">Public</span>
+                            </div>
+                            <i class="ph ph-dots-six-vertical drag-handle" title="Drag to reorder"></i>
+                        </div>
+                        <p class="repo-desc">Derp Studio | Monochrome Master is a sleek, single page web application that lets users generate, customize, and export unique monochrome themed avatars. Built entirely with vanilla HTML, CSS, and ...</p>
+                        <div class="repo-meta">
+                            <span class="meta-item"><span class="lang-color lang-html"></span> HTML</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="bento-card" style="grid-column: 1 / -1;">
+                        <div class="repo-header">
+                            <div class="repo-title-group">
+                                <a href="#" class="repo-title">
+                                    <i class="ph ph-book-bookmark"></i> Nova-Tab
+                                </a>
+                                <span class="badge" style="color: var(--text-secondary); border-color: var(--border-subtle);">Public</span>
+                            </div>
+                            <i class="ph ph-dots-six-vertical drag-handle" title="Drag to reorder"></i>
+                        </div>
+                        <p class="repo-desc">Nova Power Tab is the ultimate new tab replacement. Built to be incredibly fast and lightweight without sacrificing beautiful, modern design, Nova gives you complete control over your browsing env...</p>
+                        <div class="repo-meta">
+                            <span class="meta-item"><span class="lang-color lang-js"></span> JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contribution Graph Section -->
+            <section>
+                <div class="section-header">
+                    <h3 class="section-title">379 contributions in the last year</h3>
+                    <div style="font-size: 14px; color: var(--text-secondary);">Contribution settings <i class="ph ph-caret-down"></i></div>
+                </div>
+                
+                <div class="contribution-card">
+                    <div class="graph-wrapper">
+                        <div class="contrib-graph" id="contribGraph">
+                            <!-- JS will populate cells here -->
+                        </div>
+                    </div>
+                    
+                    <div class="contrib-footer">
+                        <div>Learn how we count contributions</div>
+                        <div class="legend">
+                            Less 
+                            <div class="contrib-cell"></div>
+                            <div class="contrib-cell contrib-level-1"></div>
+                            <div class="contrib-cell contrib-level-2"></div>
+                            <div class="contrib-cell contrib-level-3"></div>
+                            <div class="contrib-cell contrib-level-4"></div>
+                            More
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation (Visible only on mobile) -->
+    <nav class="mobile-bottom-nav">
+        <a href="#" class="nav-item">
+            <i class="ph ph-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="ph ph-magnifying-glass"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="ph ph-plus-circle"></i>
+            <span>Create</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="ph ph-bell"></i>
+            <span>Alerts</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <div style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent-primary);">
+                <img src="./assets/images/mms.jpg" alt="User" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Generate Contribution Graph Mockup
+            const graph = document.getElementById('contribGraph');
+            const totalWeeks = 53;
+            const daysPerWeek = 7;
+            const totalCells = totalWeeks * daysPerWeek;
+
+            for (let i = 0; i < totalCells; i++) {
+                const cell = document.createElement('div');
+                
+                let rand = Math.random();
+                let level = 0;
+                
+                if (rand > 0.94) level = 4;
+                else if (rand > 0.88) level = 3;
+                else if (rand > 0.78) level = 2;
+                else if (rand > 0.65) level = 1;
+
+                cell.className = `contrib-cell contrib-level-${level}`;
+                
+                const date = new Date();
+                date.setDate(date.getDate() - (totalCells - i));
+                const dateString = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                
+                let contribText = level === 0 ? 'No contributions' : `${Math.floor(Math.random() * 5 + 1 * level)} contributions`;
+                cell.title = `${contribText} on ${dateString}`;
+
+                graph.appendChild(cell);
+            }
+
+            // Tab Switching Logic
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                });
+            });
+
+            // Mobile Sidebar Drawer Logic
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const closeBtn = document.getElementById('closeDrawerBtn');
+            const drawer = document.getElementById('mobileDrawer');
+            const overlay = document.getElementById('drawerOverlay');
+
+            function openDrawer() {
+                drawer.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Stop background scroll
+            }
+
+            function closeDrawer() {
+                drawer.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = ''; 
+            }
+
+            menuBtn.addEventListener('click', openDrawer);
+            closeBtn.addEventListener('click', closeDrawer);
+            overlay.addEventListener('click', closeDrawer);
+        });
+    </script>
+</body>
+</html>
