@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MMS | GitHub Profile</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Desktop Colors (Classic Modern Dark) */
+            --bg-base: #050505;
+            --bg-panel: #0d0d0d;
+            --bg-card: #151515;
+            --bg-card-hover: #1a1a1a;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-focus: rgba(255, 255, 255, 0.15);
+            
+            --text-primary: #ffffff;
+            --text-secondary: #8b949e;
+            --text-muted: #666;
+            
+            --accent-primary: #ffffff; 
+            --accent-bg: rgba(255, 255, 255, 0.1);
+            --accent-blue: #388bfd;
+            
+            /* Contribution Colors (Green scale) */
+            --contrib-0: #161b22;
+            --contrib-1: #0e4429;
+            --contrib-2: #006d32;
+            --contrib-3: #26a641;
+            --contrib-4: #39d353;
+            
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-pill: 99px;
+            
+            --font-main: 'Inter', sans-serif;
+            --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Mobile Variables Override */
+        @media (max-width: 768px) {
+            :root {
+                --bg-base: #000000;
+                --bg-panel: #000000;
+                --bg-card: #111111;
+                --accent-primary: #f5f5f5; 
+                --accent-bg: #f5f5f5;
+                --radius-md: 16px;
+                --radius-lg: 20px;
+                --radius-xl: 32px;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            display: flex;
+            height: 100vh;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button { background: none; border: none; font: inherit; cursor: pointer; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- DESKTOP SIDEBAR MINI --- */
+        .sidebar-mini {
+            width: 68px;
+            min-width: 68px;
+            height: 100vh;
+            background: var(--bg-base);
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            gap: 24px;
+            z-index: 100;
+            position: relative;
+        }
+
+        .sidebar-mini .logo {
+            font-size: 32px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .sidebar-mini .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+        }
+
+        .sidebar-mini .icon-btn:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .sidebar-mini .spacer { flex-grow: 1; }
+
+        .sidebar-mini .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .sidebar-mini .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- DESKTOP SIDEBAR EXPANDED --- */
+        .sidebar-expanded {
+            width: 320px;
+            height: 100vh;
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border-subtle);
+            transition: width var(--transition-smooth), padding var(--transition-smooth);
+            overflow-y: auto;
+            overflow-x: hidden;
+            white-space: nowrap;
+            display: flex;
+            flex-direction: column;
+            will-change: width;
+        }
+
+        .sidebar-expanded.collapsed {
+            width: 0;
+            border-right: none;
+        }
+
+        .sidebar-inner {
+            padding: 32px 24px;
+            width: 320px;
+            opacity: 1;
+            transition: opacity var(--transition-fast);
+        }
+
+        .sidebar-expanded.collapsed .sidebar-inner {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .profile-header {
+            margin-bottom: 24px;
+        }
+
+        .profile-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-header h2 {
+            font-size: 15px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .pronoun-badge {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .profile-quote {
+            font-size: 13px;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            white-space: normal;
+            line-height: 1.4;
+        }
+
+        /* Nav Tabs */
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 36px;
+        }
+
+        .nav-tab {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+
+        .nav-tab .tab-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-tab i { font-size: 18px; }
+
+        .nav-tab:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .nav-tab.active {
+            background: var(--accent-bg);
+            color: var(--text-primary);
+        }
+
+        .badge-count {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: var(--radius-pill);
+            font-size: 11px;
+        }
+
+        /* Profile Details */
+        .profile-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .profile-meta li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-meta i { font-size: 16px; }
+
+        .btn-follow {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition-fast);
+        }
+
+        .btn-follow:hover {
+            background: var(--text-primary);
+            color: var(--bg-base);
+        }
+
+        /* --- DYNAMIC MAIN WORKSPACE --- */
+        .main-workspace {
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+            background: var(--bg-base);
+            padding: 32px 40px;
+            position: relative;
+            scroll-behavior: smooth;
+        }
+
+        /* Smart Bento Grid Setup */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: minmax(260px, 1fr) minmax(280px, 1.5fr) minmax(280px, 1.5fr);
+            gap: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Staggered Card Animation */
+        @keyframes fadeUpIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+            animation: fadeUpIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .bento-card:nth-child(1) { animation-delay: 0.05s; }
+        .bento-card:nth-child(2) { animation-delay: 0.1s; }
+        .bento-card:nth-child(3) { animation-delay: 0.15s; }
+        .bento-card:nth-child(4) { animation-delay: 0.2s; }
+        .bento-card:nth-child(5) { animation-delay: 0.25s; }
+
+        .bento-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        /* Specific Cards Structure */
+        .photo-card {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+            padding: 0;
+            aspect-ratio: 4/5;
+            background: #000;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .readme-card {
+            grid-column: 2 / 4;
+            grid-row: 1 / 2;
+        }
+
+        .readme-header {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-family: monospace;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .readme-card h3 {
+            font-size: 22px;
+            margin-bottom: 14px;
+        }
+        
+        .readme-card p {
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .achievements-card {
+            grid-column: 1 / 2;
+            grid-row: 3 / 4;
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .achievement-badge {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            border: 1px solid var(--border-subtle);
+            transition: var(--transition-fast);
+            cursor: pointer;
+        }
+        
+        .achievement-badge:hover {
+            transform: scale(1.15) rotate(5deg);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .tech-stack-card {
+            grid-column: 2 / 4;
+            grid-row: 3 / 4;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .tech-tag {
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-fast);
+            cursor: default;
+        }
+
+        .tech-tag i {
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .tech-tag:hover {
+            background: var(--text-primary);
+            color: var(--bg-base);
+            border-color: var(--text-primary);
+        }
+        .tech-tag:hover i { color: var(--bg-base); }
+
+        .contrib-card {
+            grid-column: 2 / 4;
+            grid-row: 2 / 3;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .dropdown {
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            padding: 6px 12px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        
+        .dropdown:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .graph-scroll {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .graph-scroll::-webkit-scrollbar { display: none; }
+
+        .contrib-graph {
+            display: grid;
+            grid-template-columns: repeat(53, 1fr);
+            gap: 4px;
+            min-width: 700px;
+            justify-content: center;
+        }
+
+        .contrib-cell {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            background-color: var(--contrib-0);
+            transition: transform 0.1s;
+        }
+
+        .contrib-cell:hover {
+            transform: scale(1.5);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .c-1 { background-color: var(--contrib-1); }
+        .c-2 { background-color: var(--contrib-2); }
+        .c-3 { background-color: var(--contrib-3); }
+        .c-4 { background-color: var(--contrib-4); }
+
+        /* --- PINNED REPOSITORIES SECTION --- */
+        .pinned-section {
+            grid-column: 1 / -1; 
+            margin-top: 8px;
+        }
+
+        /* Pinned Section Header elements */
+        .pinned-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+
+        .pinned-header h3 {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+
+        .customize-pins {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .customize-pins:hover {
+            color: var(--accent-blue);
+        }
+
+        .repos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .repo-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+            height: 100%;
+        }
+
+        .repo-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(56, 139, 253, 0.5);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .repo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .repo-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .repo-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #58a6ff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .repo-title:hover {
+            text-decoration: underline;
+        }
+
+        /* The Drag/Grip Handle Icon */
+        .drag-icon {
+            color: var(--text-muted);
+            cursor: grab;
+            font-size: 20px;
+            transition: color var(--transition-fast);
+        }
+
+        .drag-icon:hover {
+            color: var(--text-primary);
+        }
+        
+        .drag-icon:active {
+            cursor: grabbing;
+        }
+
+        .repo-desc {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 18px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .repo-footer {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .lang-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .lang-html { background-color: #e34c26; }
+        .lang-js { background-color: #f1e05a; }
+
+        /* --- MOBILE-SPECIFIC ELEMENTS (Hidden on Desktop) --- */
+        .mobile-header { display: none; }
+        .mobile-avatar-section { display: none; }
+        .mobile-tabs-scroll { display: none; }
+        .mobile-bottom-nav { display: none; }
+
+        /* --- SMART LAYOUT ADAPTATION --- */
+        
+        @media (max-width: 1250px) {
+            .bento-grid { 
+                grid-template-columns: 1fr 1fr; 
+                grid-template-rows: auto auto auto;
+            }
+            .photo-card { 
+                display: none;
+            }
+            .readme-card { grid-column: 1 / 3; grid-row: 1; }
+            .achievements-card { grid-column: 1 / 2; grid-row: 2; }
+            .tech-stack-card { grid-column: 2 / 3; grid-row: 2; }
+            .contrib-card { grid-column: 1 / 3; grid-row: 3; }
+            .pinned-section { grid-column: 1 / 3; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-mini, .sidebar-expanded {
+                display: none !important; 
+            }
+
+            .main-workspace {
+                padding: 0 16px 100px 16px;
+            }
+
+            .mobile-header {
+                display: flex;
+                position: sticky;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 120;
+                padding: 16px 4px;
+                margin-bottom: 12px;
+                justify-content: space-between;
+                align-items: center;
+                background: transparent;
+                border-bottom: 1px solid transparent;
+                transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .mobile-header.scrolled {
+                background: rgba(10, 10, 10, 0.85);
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+                padding: 12px 20px;
+                margin-left: -16px;
+                margin-right: -16px;
+            }
+
+            .mobile-nav-title-group {
+                position: relative;
+                height: 40px;
+                flex: 1; 
+                display: flex;
+                align-items: center;
+            }
+
+            .mobile-header-title {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 20px;
+                font-weight: 700;
+                white-space: nowrap;
+                transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .mini-profile-nav {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                opacity: 0;
+                transform: translateY(20px);
+                pointer-events: none;
+                white-space: nowrap;
+                transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .mini-profile-nav img {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid var(--border-focus);
+            }
+
+            .mini-profile-nav .mini-name {
+                font-weight: 700;
+                font-size: 16px;
+                color: var(--text-primary);
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .mobile-header.scrolled .mobile-header-title {
+                opacity: 0;
+                transform: translateY(-30px); 
+                pointer-events: none;
+            }
+
+            .mobile-header.scrolled .mini-profile-nav {
+                opacity: 1;
+                transform: translateY(-50%); 
+                pointer-events: auto;
+            }
+
+            .mobile-avatar-section {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin-top: 8px;
+                margin-bottom: 24px;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+            }
+
+            .scrolled-main-profile .mobile-avatar-section {
+                opacity: 0.15;
+                transform: scale(0.92);
+            }
+
+            .mobile-avatar {
+                width: 104px;
+                height: 104px;
+                border-radius: 50%;
+                margin-bottom: 14px;
+                border: 2px solid rgba(255, 255, 255, 0.12);
+                padding: 4px;
+                position: relative;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            }
+
+            .mobile-avatar img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .mobile-name {
+                font-size: 22px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-bottom: 4px;
+            }
+
+            .mobile-handle {
+                font-size: 14px;
+                color: var(--text-secondary);
+                margin-bottom: 10px;
+            }
+
+            .mobile-bio-quote {
+                font-size: 13px;
+                font-style: italic;
+                color: var(--text-secondary);
+                background: rgba(255, 255, 255, 0.04);
+                padding: 6px 14px;
+                border-radius: var(--radius-pill);
+                border: 1px solid var(--border-subtle);
+                margin-bottom: 12px;
+                max-width: 90%;
+            }
+
+            .mobile-stats {
+                color: var(--text-secondary);
+                font-size: 13px;
+                display: flex;
+                gap: 8px;
+                align-items: center;
+            }
+
+            .mobile-tabs-scroll {
+                display: flex;
+                overflow-x: auto;
+                gap: 10px;
+                padding: 4px 2px 18px 2px;
+                margin-bottom: 14px;
+                scrollbar-width: none;
+            }
+            .mobile-tabs-scroll::-webkit-scrollbar { display: none; }
+
+            .mobile-tab {
+                padding: 9px 18px;
+                border-radius: var(--radius-pill);
+                background: var(--bg-card);
+                color: var(--text-secondary);
+                font-weight: 500;
+                font-size: 13px;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                transition: var(--transition-fast);
+                border: 1px solid var(--border-subtle);
+            }
+
+            .mobile-tab.active {
+                background: var(--text-primary);
+                color: #000;
+                font-weight: 600;
+                border-color: var(--text-primary);
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .readme-card, .achievements-card, .tech-stack-card, .contrib-card, .pinned-section {
+                grid-column: 1 / -1;
+                grid-row: auto;
+            }
+            
+            .bento-card {
+                padding: 18px;
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--border-subtle);
+            }
+
+            .repos-container {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .mobile-bottom-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 10, 10, 0.92);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 12px 24px calc(12px + env(safe-area-inset-bottom));
+                justify-content: space-between;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .nav-item-bottom {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 3px;
+                color: var(--text-muted);
+                font-size: 11px;
+                font-weight: 500;
+                transition: var(--transition-fast);
+            }
+
+            .nav-item-bottom i { font-size: 22px; }
+            .nav-item-bottom.active { color: var(--text-primary); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Desktop Sidebar Mini -->
+    <nav class="sidebar-mini">
+        <i class="ph-fill ph-github-logo logo"></i>
+        <button class="icon-btn" id="menuToggle" title="Toggle Sidebar">
+            <i class="ph ph-list"></i>
+        </button>
+        
+        <div class="spacer"></div>
+        
+        <button class="icon-btn"><i class="ph ph-plus"></i></button>
+        <button class="icon-btn"><i class="ph ph-git-pull-request"></i></button>
+        <button class="icon-btn"><i class="ph ph-record"></i></button>
+        <button class="icon-btn">
+            <div style="position:relative;">
+                <i class="ph ph-bell"></i>
+                <div style="position:absolute; top:2px; right:2px; width:6px; height:6px; background:#58a6ff; border-radius:50%;"></div>
+            </div>
+        </button>
+        
+        <div class="spacer"></div>
+        
+        <div class="user-avatar">
+            <img src="./assets/images/mms.jpg" alt="MMS" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'">
+        </div>
+    </nav>
+
+    <!-- Desktop Sidebar Expanded -->
+    <aside class="sidebar-expanded" id="profilePanel">
+        <div class="sidebar-inner">
+            
+            <div class="profile-header">
+                <h1>MMS <i class="ph-fill ph-check-circle" style="color: #388bfd; font-size: 20px;"></i></h1>
+                <h2>MMSSB <span class="pronoun-badge">· he/him</span></h2>
+            </div>
+
+            <div class="profile-quote">
+                "Our Dead is not Dead Until We Forgot Them 😐"
+            </div>
+
+            <nav class="nav-tabs">
+                <a href="#" class="nav-tab active">
+                    <div class="tab-left"><i class="ph ph-book-open"></i> Overview</div>
+                </a>
+                <a href="#" class="nav-tab">
+                    <div class="tab-left"><i class="ph ph-file-code"></i> Repositories</div>
+                    <span class="badge-count">5</span>
+                </a>
+                <a href="#" class="nav-tab">
+                    <div class="tab-left"><i class="ph ph-kanban"></i> Projects</div>
+                </a>
+                <a href="#" class="nav-tab">
+                    <div class="tab-left"><i class="ph ph-package"></i> Packages</div>
+                </a>
+                <a href="#" class="nav-tab">
+                    <div class="tab-left"><i class="ph ph-star"></i> Stars</div>
+                    <span class="badge-count">3</span>
+                </a>
+            </nav>
+
+            <ul class="profile-meta">
+                <li><i class="ph ph-map-pin"></i> Egypt</li>
+                <li><i class="ph ph-graduation-cap"></i> MUST (BIS Graduate)</li>
+                <li><i class="ph ph-link"></i> <a href="https://mmssb.github.io/" target="_blank">https://mmssb.github.io/</a></li>
+                <li style="margin-top: 6px;">
+                    <i class="ph ph-users"></i> 
+                    <span style="color:var(--text-primary); font-weight:600;">11</span> followers · 
+                    <span style="color:var(--text-primary); font-weight:600;">90</span> following
+                </li>
+            </ul>
+
+            <button class="btn-follow">Edit profile</button>
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-workspace" id="mainWorkspace">
+        
+        <!-- Mobile Sticky Header -->
+        <div class="mobile-header" id="mobileHeader">
+            <div class="mobile-nav-title-group">
+                <h1 class="mobile-header-title">My profile</h1>
+                <div class="mini-profile-nav">
+                    <img src="./assets/images/mms.jpg" alt="MMS" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'">
+                    <span class="mini-name">MMS <i class="ph-fill ph-check-circle" style="color:#388bfd; font-size:16px;"></i></span>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:12px; align-items:center;">
+                <button class="icon-btn" style="font-size:20px;"><i class="ph ph-bell"></i></button>
+                <button class="icon-btn" style="font-size:20px;"><i class="ph ph-gear"></i></button>
+            </div>
+        </div>
+
+        <!-- Mobile Avatar & Bio Section -->
+        <div class="mobile-avatar-section">
+            <div class="mobile-avatar">
+                <img src="./assets/images/mms.jpg" alt="MMS Avatar" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'">
+            </div>
+            <h2 class="mobile-name">MMS <i class="ph-fill ph-check-circle" style="color:#388bfd; font-size: 20px;"></i></h2>
+            <div class="mobile-handle">MMSSB · he/him</div>
+            <div class="mobile-bio-quote">"Our Dead is not Dead Until We Forgot Them 😐"</div>
+            <p class="mobile-stats">
+                <span><strong>11</strong> followers</span> · <span><strong>90</strong> following</span>
+            </p>
+        </div>
+
+        <!-- Mobile Scrollable Pill Tabs -->
+        <div class="mobile-tabs-scroll">
+            <button class="mobile-tab active">
+                <i class="ph-fill ph-book-open"></i> Overview
+            </button>
+            <button class="mobile-tab">
+                <i class="ph ph-file-code"></i> Repositories
+            </button>
+            <button class="mobile-tab">
+                <i class="ph ph-kanban"></i> Projects
+            </button>
+            <button class="mobile-tab">
+                <i class="ph ph-package"></i> Packages
+            </button>
+            <button class="mobile-tab">
+                <i class="ph ph-star"></i> Stars
+            </button>
+        </div>
+
+        <!-- SMART BENTO GRID -->
+        <div class="bento-grid">
+            
+            <div class="bento-card photo-card">
+                <img src="./assets/images/mms.jpg" alt="MMS Cat Portrait" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'">
+            </div>
+
+            <div class="bento-card readme-card">
+                <div class="readme-header"><i class="ph ph-book-bookmark"></i> MMSSB / README.md</div>
+                <h3>Hi there! 👋</h3>
+                <p>I'm a FrontEnd Developer from Egypt, working in web development. I enjoy turning complex problems into simple, beautiful and intuitive designs. My job is to build your website so that it is functional and user-friendly but at the same time attractive.</p>
+                <p>My aim is to bring across your message and identity in the most creative way. Check out my personal website at <a href="https://mmssb.github.io/" target="_blank" style="color:#58a6ff; text-decoration:underline;">mmssb.github.io</a>.</p>
+            </div>
+
+            <div class="bento-card achievements-card">
+                <div class="card-title">Achievements</div>
+                <div class="achievements-grid">
+                    <div class="achievement-badge" title="Developer">🚀</div>
+                    <div class="achievement-badge" title="Quickdraw">⚡</div>
+                    <div class="achievement-badge" title="Pull Shark">🦈</div>
+                    <div class="achievement-badge" title="Galaxy Brain">🧠</div>
+                </div>
+                <div style="margin-top: 16px; font-size: 12px; color: var(--text-secondary);">
+                    <span class="badge-count" style="margin-right: 8px;">Public</span> Pinned achievements
+                </div>
+            </div>
+
+            <div class="bento-card tech-stack-card">
+                <div class="card-title"><i class="fa-solid fa-code"></i> Tech Stack</div>
+                <div class="tech-tags">
+                    <div class="tech-tag"><i class="fa-brands fa-html5" style="color: #e34f26;"></i> HTML5</div>
+                    <div class="tech-tag"><i class="fa-brands fa-css3-alt" style="color: #1572B6;"></i> CSS3</div>
+                    <div class="tech-tag"><i class="fa-brands fa-js" style="color: #F7DF1E;"></i> JavaScript</div>
+                    <!-- <div class="tech-tag"><i class="fa-brands fa-react" style="color: #61DAFB;"></i> React</div>
+                    <div class="tech-tag"><i class="fa-brands fa-docker" style="color: #2496ED;"></i> Docker</div> -->
+                </div>
+            </div>
+
+            <div class="bento-card contrib-card">
+                <div class="card-header">
+                    <div class="card-title">379 contributions in the last year</div>
+                    <div class="dropdown">2026 <i class="ph ph-caret-down"></i></div>
+                </div>
+                <div class="graph-scroll">
+                    <div class="contrib-graph" id="contributionGrid">
+                        <!-- JS Generated Cells -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- PINNED SECTION WRAPPER -->
+            <div class="pinned-section">
+                <!-- Highlighted Pinned Header Elements -->
+                <div class="pinned-header">
+                    <h3>Pinned</h3>
+                    <a href="#" class="customize-pins">Customize your pins</a>
+                </div>
+                
+                <div class="repos-container">
+                    
+                    <div class="repo-card">
+                        <div>
+                            <div class="repo-header">
+                                <div class="repo-title-group">
+                                    <a href="https://mmssb.github.io/praytime.com/" target="_blank" class="repo-title">
+                                        <i class="ph ph-book-bookmark"></i> praytime.com
+                                    </a>
+                                    <span class="badge-count" style="border: 1px solid var(--border-subtle);">Public</span>
+                                </div>
+                                <i class="ph ph-dots-six-vertical drag-icon" title="Drag to reorder"></i>
+                            </div>
+                            <p class="repo-desc">
+                                PrayTime is a lightweight web application designed to help Muslims track prayer times accurately while staying updated with the weather. It features a beautiful, modern interface with glassmorphism...
+                            </p>
+                        </div>
+                        <div class="repo-footer">
+                            <span style="display:flex; align-items:center; gap:6px;">
+                                <span class="lang-dot lang-html"></span> HTML
+                            </span>
+                            <span><i class="ph ph-star"></i> 2</span>
+                        </div>
+                    </div>
+
+                    <div class="repo-card">
+                        <div>
+                            <div class="repo-header">
+                                <div class="repo-title-group">
+                                    <a href="#" class="repo-title">
+                                        <i class="ph ph-book-bookmark"></i> websql
+                                    </a>
+                                    <span class="badge-count" style="border: 1px solid var(--border-subtle);">Public</span>
+                                </div>
+                                <i class="ph ph-dots-six-vertical drag-icon" title="Drag to reorder"></i>
+                            </div>
+                            <p class="repo-desc">
+                                A modern, highly responsive, browser-based SQL Server Management Studio (SSMS) simulator built entirely with Vanilla JavaScript, HTML5, and Pure CSS.
+                            </p>
+                        </div>
+                        <div class="repo-footer">
+                            <span style="display:flex; align-items:center; gap:6px;">
+                                <span class="lang-dot lang-js"></span> JavaScript
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="repo-card">
+                        <div>
+                            <div class="repo-header">
+                                <div class="repo-title-group">
+                                    <a href="#" class="repo-title">
+                                        <i class="ph ph-book-bookmark"></i> linkdock
+                                    </a>
+                                    <span class="badge-count" style="border: 1px solid var(--border-subtle);">Public</span>
+                                </div>
+                                <i class="ph ph-dots-six-vertical drag-icon" title="Drag to reorder"></i>
+                            </div>
+                            <p class="repo-desc">
+                                Link Dock is a 100% serverless, zero backend "Link in Bio" builder.
+                            </p>
+                        </div>
+                        <div class="repo-footer">
+                            <span style="display:flex; align-items:center; gap:6px;">
+                                <span class="lang-dot lang-html"></span> HTML
+                            </span>
+                            <span><i class="ph ph-star"></i> 1</span>
+                        </div>
+                    </div>
+
+                    <div class="repo-card">
+                        <div>
+                            <div class="repo-header">
+                                <div class="repo-title-group">
+                                    <a href="#" class="repo-title">
+                                        <i class="ph ph-book-bookmark"></i> derp-studio
+                                    </a>
+                                    <span class="badge-count" style="border: 1px solid var(--border-subtle);">Public</span>
+                                </div>
+                                <i class="ph ph-dots-six-vertical drag-icon" title="Drag to reorder"></i>
+                            </div>
+                            <p class="repo-desc">
+                                Derp Studio | Monochrome Master is a sleek, single page web application that lets users generate, customize, and export unique monochrome themed avatars. Built entirely with vanilla HTML, CSS, and ...
+                            </p>
+                        </div>
+                        <div class="repo-footer">
+                            <span style="display:flex; align-items:center; gap:6px;">
+                                <span class="lang-dot lang-html"></span> HTML
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="repo-card">
+                        <div>
+                            <div class="repo-header">
+                                <div class="repo-title-group">
+                                    <a href="#" class="repo-title">
+                                        <i class="ph ph-book-bookmark"></i> Nova-Tab
+                                    </a>
+                                    <span class="badge-count" style="border: 1px solid var(--border-subtle);">Public</span>
+                                </div>
+                                <i class="ph ph-dots-six-vertical drag-icon" title="Drag to reorder"></i>
+                            </div>
+                            <p class="repo-desc">
+                                Nova Power Tab is the ultimate new tab replacement. Built to be incredibly fast and lightweight without sacrificing beautiful, modern design, Nova gives you complete control over your browsing env...
+                            </p>
+                        </div>
+                        <div class="repo-footer">
+                            <span style="display:flex; align-items:center; gap:6px;">
+                                <span class="lang-dot lang-js"></span> JavaScript
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <a href="#" class="nav-item-bottom">
+            <i class="ph ph-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item-bottom">
+            <i class="ph ph-magnifying-glass"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="nav-item-bottom">
+            <i class="ph ph-chat-circle"></i>
+            <span>Chats</span>
+        </a>
+        <a href="#" class="nav-item-bottom active">
+            <i class="ph-fill ph-user-circle"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const panel = document.getElementById('profilePanel');
+            const toggleBtn = document.getElementById('menuToggle');
+            const STORAGE_KEY = 'github-redesign-sidebar-collapsed';
+
+            /* --- SMART SIDEBAR LOGIC --- */
+            function manageSmartLayout() {
+                if (window.innerWidth <= 1150 && window.innerWidth > 768) {
+                    if (panel && !panel.classList.contains('collapsed')) {
+                        panel.classList.add('collapsed');
+                    }
+                }
+            }
+
+            const userPref = localStorage.getItem(STORAGE_KEY);
+            if (userPref === 'true' && panel) {
+                panel.classList.add('collapsed');
+            } else if (userPref === null) {
+                manageSmartLayout();
+            }
+
+            if (toggleBtn && panel) {
+                toggleBtn.addEventListener('click', () => {
+                    panel.classList.toggle('collapsed');
+                    localStorage.setItem(STORAGE_KEY, panel.classList.contains('collapsed'));
+                });
+            }
+
+            window.addEventListener('resize', () => {
+                if (userPref === null) {
+                    if (window.innerWidth <= 1150 && window.innerWidth > 768) {
+                         panel.classList.add('collapsed');
+                    } else if (window.innerWidth > 1150) {
+                         panel.classList.remove('collapsed');
+                    }
+                }
+            });
+
+            /* --- FIXED Mobile Header Sticky Scroll Animation --- */
+            const workspace = document.getElementById('mainWorkspace');
+            const mobileHeader = document.getElementById('mobileHeader');
+
+            workspace.addEventListener('scroll', () => {
+                if (window.innerWidth <= 768) {
+                    if (workspace.scrollTop > 50) {
+                        mobileHeader.classList.add('scrolled');
+                        workspace.classList.add('scrolled-main-profile');
+                    } else {
+                        mobileHeader.classList.remove('scrolled');
+                        workspace.classList.remove('scrolled-main-profile');
+                    }
+                }
+            });
+
+            /* --- Generate Realistic Contribution Graph Mockup (379 Contributions) --- */
+            const grid = document.getElementById('contributionGrid');
+            const weeks = 53;
+            const days = 7;
+            
+            for (let i = 0; i < weeks * days; i++) {
+                const cell = document.createElement('div');
+                let rand = Math.random();
+                let cClass = '';
+                
+                if (rand > 0.94) cClass = 'c-4';
+                else if (rand > 0.88) cClass = 'c-3';
+                else if (rand > 0.78) cClass = 'c-2';
+                else if (rand > 0.65) cClass = 'c-1';
+                
+                cell.className = `contrib-cell ${cClass}`;
+                grid.appendChild(cell);
+            }
+
+            /* --- Interactive Tabs --- */
+            const mobileTabs = document.querySelectorAll('.mobile-tab');
+            mobileTabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    mobileTabs.forEach(t => t.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                });
+            });
+
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
