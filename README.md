@@ -29,10 +29,4 @@ This repository contains different iterations and experiments of the profile red
 * `github.html` — A sleek, app-like interpretation of the GitHub profile featuring a centered layout, fixed bottom mobile navigation, and floating search bars.
 * `github1.html` — A comprehensive, data-rich Bento UI layout featuring pinned repositories, customized tech stack tags, and a highly intelligent responsive grid that adapts perfectly to desktop, tablet, and mobile screens.
 
-## 🚀 How to Run
 
-Since this project uses pure frontend technologies, there is no build step or server required!
-
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/MMSSB/github-design.git](https://github.com/MMSSB/github-design.git)
