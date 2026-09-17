@@ -8,6 +8,12 @@
 
 <br>
 
+<div align="center">
+  <h3>🌟 <a href="https://mmssb.github.io/github-designs">View the Main Live Demo Collection</a> 🌟</h3>
+</div>
+
+<br>
+
 ## 📖 Overview
 **github-design** is a collection of modern, fully responsive UI reimaginings of the classic GitHub profile page. The goal of this project is to explore how developer portfolios could look using 2026 design trends, focusing on clean aesthetics, fluid responsiveness, and premium user experiences.
 
@@ -22,11 +28,22 @@
 * **🎨 Modern UI/UX Trends:** Features subtle hover glows, floating action buttons, drag-and-drop grip icons, and sleek transitions.
 * **⚡ Zero Dependencies:** Built entirely with raw HTML5, CSS3, and Vanilla JavaScript (utilizing Phosphor and FontAwesome for crisp iconography).
 
-## 📂 Project Structure
+## 📂 Project Structure & Designs
 
 This repository contains different iterations and experiments of the profile redesign:
 
-* `github.html` — A sleek, app-like interpretation of the GitHub profile featuring a centered layout, fixed bottom mobile navigation, and floating search bars.
-* `github1.html` — A comprehensive, data-rich Bento UI layout featuring pinned repositories, customized tech stack tags, and a highly intelligent responsive grid that adapts perfectly to desktop, tablet, and mobile screens.
+### 1. Smart Bento Profile (`github1.html`)
+A comprehensive, data-rich Bento UI layout featuring pinned repositories, customized tech stack tags, and a highly intelligent responsive grid that adapts perfectly to desktop, tablet, and mobile screens.
+* 🖥️ **Live Demo:** [View Smart Bento Profile](https://mmssb.github.io/github-designs/designs/github1)
+* 📸 **Preview:**
+<br>
+<img src="screenshots/Smart-Bento-Profile.png" alt="Smart Bento Profile" width="100%">
 
+<br>
 
+### 2. Classic Modern Profile (`github.html`)
+A sleek, app-like interpretation of the GitHub profile featuring a centered layout, fixed bottom mobile navigation, and floating search bars.
+* 🖥️ **Live Demo:** [View Classic Modern Profile](https://mmssb.github.io/github-designs/designs/github)
+* 📸 **Preview:**
+<br>
+<img src="screenshots/modern-classic.png" alt="Classic Modern Profile" width="100%">
