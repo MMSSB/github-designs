@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Designs | By MMS</title>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* --- DARK THEME (Default) --- */
+  :root {
+    --bg-base: #050505;
+    --bg-surface: #111111;
+    --bg-surface-hover: #161b22;
+    --border-subtle: rgba(255, 255, 255, 0.1);
+    --border-focus: rgba(88, 166, 255, 0.4);
+    
+    --text-primary: #f5f5f5;
+    --text-secondary: #8b949e;
+    --text-muted: #666666;
+    
+    --accent-primary: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --github-green: #238636;
+    --github-green-hover: #2ea043;
+    
+    --badge-bg: rgba(255, 255, 255, 0.05);
+    
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-full: 9999px;
+    
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* --- LIGHT THEME --- */
+  [data-theme="light"] {
+    --bg-base: #ffffff;
+    --bg-surface: #f6f8fa;
+    --bg-surface-hover: #eaeef2;
+    --border-subtle: rgba(0, 0, 0, 0.1);
+    --border-focus: rgba(9, 105, 218, 0.4);
+    
+    --text-primary: #1f2328;
+    --text-secondary: #656d76;
+    --text-muted: #8c959f;
+    
+    --accent-primary: #0969da;
+    --accent-glow: rgba(9, 105, 218, 0.15);
+    --github-green: #1f883d;
+    --github-green-hover: #1a7f37;
+    
+    --badge-bg: #ffffff;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-main);
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* ===== Top Scroll Progress Bar ===== */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--github-green), var(--accent-primary));
+    z-index: 10000;
+    transition: width 0.1s ease;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* ===== Theme Switcher ===== */
+  .theme-switcher-wrapper {
+    position: fixed;
+    top: 24px;
+    right: 32px;
+    z-index: 100;
+  }
+
+  .theme-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    transition: var(--transition);
+  }
+
+  .theme-btn:hover {
+    transform: scale(1.1);
+    background: var(--bg-surface-hover);
+    border-color: var(--border-focus);
+  }
+
+  .theme-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    background: var(--bg-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 8px;
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    
+    /* Animation defaults */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.95);
+    transform-origin: top right;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .theme-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  .theme-option {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-family: inherit;
+  }
+
+  .theme-option i {
+    font-size: 18px;
+  }
+
+  .theme-option:hover {
+    background: var(--badge-bg);
+    color: var(--text-primary);
+  }
+
+  .theme-option.active {
+    color: var(--accent-primary);
+    background: var(--accent-glow);
+  }
+
+  /* ===== Constellation Background ===== */
+  .constellation-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .constellation-bg canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* In light mode, invert and fade the canvas so the stars become dark */
+  [data-theme="light"] .constellation-bg {
+    filter: invert(1) hue-rotate(180deg) opacity(0.5);
+  }
+
+  /* ===== Main Layout ===== */
+  .page-wrapper {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== Left Hero Section - FIXED ===== */
+  .hero-section {
+    width: 50%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+    background: transparent;
+  }
+
+  .hero-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 48px;
+    animation: fadeInDown 0.6s ease;
+  }
+
+  .hero-logo-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--text-primary);
+    color: var(--bg-base);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 28px;
+    transition: var(--transition);
+  }
+  
+  .hero-logo-icon:hover {
+      transform: rotate(360deg);
+  }
+
+  .hero-logo-text {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-title {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+    max-width: 500px;
+    color: var(--text-primary);
+    animation: fadeInUp 0.6s ease;
+  }
+
+  .hero-title span {
+    color: var(--accent-primary);
+  }
+
+  .hero-description {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 40px;
+    max-width: 440px;
+    animation: fadeInUp 0.8s ease;
+  }
+
+  .hero-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    animation: fadeInUp 1s ease;
+  }
+
+  .hero-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--badge-bg);
+    border: 1px solid var(--border-subtle);
+    padding: 10px 20px;
+    border-radius: var(--radius-full);
+    transition: var(--transition-fast);
+  }
+
+  .hero-link:hover {
+    border-color: var(--border-focus);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .hero-link i {
+    font-size: 20px;
+  }
+
+  /* Made By MMS Badge */
+  .made-by-badge {
+    position: absolute;
+    bottom: 40px;
+    left: 80px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    animation: fadeInUp 1.2s ease;
+    transition: var(--transition);
+  }
+  
+  .made-by-badge a {
+      color: var(--accent-primary);
+      font-weight: 700;
+  }
+
+  .made-by-badge:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+  }
+
+  .made-by-badge .ph-heart {
+      color: #e25555;
+      font-size: 16px;
+      animation: heartbeat 1.5s infinite;
+  }
+
+  /* ===== Right Content Section - SCROLLABLE ===== */
+  .content-section {
+    width: 50%;
+    margin-left: 50%;
+    min-height: 100vh;
+    padding: 80px 60px;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1;
+    background: var(--bg-base);
+    border-left: 1px solid var(--border-subtle);
+    transition: background-color 0.4s ease;
+  }
+
+  /* Filter Tabs */
+  .filter-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    background: var(--bg-base);
+    padding: 20px 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background-color 0.4s ease;
+  }
+
+  .filter-tab {
+    padding: 8px 20px;
+    border-radius: var(--radius-full);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border-subtle);
+    transition: var(--transition-fast);
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+    font-family: var(--font-main);
+  }
+
+  .filter-tab:hover {
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+  }
+
+  .filter-tab.active {
+    background: var(--text-primary);
+    color: var(--bg-base);
+    border-color: var(--text-primary);
+  }
+
+  /* Template Card */
+  .template-card {
+    margin-bottom: 64px;
+    animation: fadeInUp 0.6s ease backwards;
+  }
+
+  .template-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .template-card-badge {
+    background: var(--accent-glow);
+    border: 1px solid var(--border-focus);
+    color: var(--accent-primary);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .template-card-date {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .template-preview {
+    width: 100%;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    margin-bottom: 24px;
+    background: var(--bg-surface);
+    position: relative;
+    transition: var(--transition);
+  }
+
+  .template-preview:hover {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 1px var(--border-focus), 0 20px 40px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
+  }
+
+  .template-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .template-preview:hover img {
+    transform: scale(1.03);
+  }
+
+  /* Fallback Image Generator */
+  .fallback-img {
+    height: 300px;
+    width: 100%;
+    background: radial-gradient(circle at top left, var(--accent-glow), transparent 70%), var(--bg-surface-hover);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 16px;
+    gap: 12px;
+  }
+  .fallback-img i {
+    font-size: 48px;
+    color: var(--border-subtle);
+  }
+
+  /* Template Info */
+  .template-info {
+    margin-top: 4px;
+  }
+
+  .template-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .template-name {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+  }
+
+  .template-description {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    max-width: 600px;
+  }
+
+  .template-actions {
+    list-style: none;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .template-action-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    transition: var(--transition-fast);
+  }
+
+  .template-action-link:hover {
+    background: var(--bg-surface-hover);
+    border-color: var(--text-secondary);
+    transform: translateY(-2px);
+  }
+  
+  .template-action-link.primary {
+      background: var(--github-green);
+      color: #fff;
+      border-color: transparent;
+  }
+  .template-action-link.primary:hover {
+      background: var(--github-green-hover);
+      box-shadow: 0 4px 14px rgba(46, 160, 67, 0.3);
+  }
+
+  /* ===== Mobile Responsiveness ===== */
+  @media (max-width: 1024px) {
+    .page-wrapper {
+      flex-direction: column;
+    }
+
+    .theme-switcher-wrapper {
+      top: 20px;
+      right: 20px;
+    }
+
+    .hero-section {
+      width: 100%;
+      height: auto;
+      position: relative;
+      padding: 80px 40px 40px;
+      background: var(--bg-base);
+    }
+
+    .constellation-bg {
+      width: 100%;
+      height: 60vh;
+      opacity: 0.4;
+    }
+
+    .hero-title {
+      font-size: 40px;
+    }
+
+    .made-by-badge {
+      position: relative;
+      bottom: 0;
+      left: 0;
+      margin-top: 20px;
+    }
+
+    .content-section {
+      width: 100%;
+      margin-left: 0;
+      padding: 20px 40px 60px;
+      border-left: none;
+      min-height: auto;
+    }
+    
+    .fallback-img {
+      height: 220px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-section {
+      padding: 80px 20px 30px;
+    }
+
+    .hero-logo-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+    }
+
+    .hero-title {
+      font-size: 36px;
+      letter-spacing: -1px;
+    }
+
+    .hero-description {
+      font-size: 15px;
+    }
+
+    .hero-links {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+    
+    .hero-link {
+        justify-content: center;
+    }
+
+    .made-by-badge {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .content-section {
+      padding: 10px 20px 40px;
+    }
+
+    .filter-tabs {
+      padding: 10px 0 20px;
+      margin-bottom: 30px;
+    }
+
+    .template-card {
+      margin-bottom: 48px;
+    }
+
+    .template-name {
+      font-size: 20px;
+    }
+    
+    .template-actions {
+        flex-direction: column;
+    }
+    
+    .template-action-link {
+        width: 100%;
+        justify-content: center;
+    }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-subtle);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.25); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.25); }
+    60% { transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Theme Switcher -->
+<div class="theme-switcher-wrapper">
+    <button class="theme-btn" id="themeToggleBtn" aria-label="Switch Theme">
+        <i class="ph ph-moon"></i>
+    </button>
+    
+    <div class="theme-dropdown" id="themeDropdown">
+        <button class="theme-option" data-theme-val="light"><i class="ph ph-sun"></i> Light</button>
+        <button class="theme-option" data-theme-val="dark"><i class="ph ph-moon"></i> Dark</button>
+        <button class="theme-option" data-theme-val="system"><i class="ph ph-desktop"></i> System</button>
+    </div>
+</div>
+
+<!-- Constellation Background -->
+<div class="constellation-bg" id="constellationBg">
+  <canvas id="constellationCanvas"></canvas>
+</div>
+
+<div class="page-wrapper">
+  
+  <!-- Left Hero Section - FIXED -->
+  <section class="hero-section">
+    <div class="hero-logo">
+      <div class="hero-logo-icon">
+        <i class="ph-fill ph-github-logo"></i>
+      </div>
+      <span class="hero-logo-text">GitHub Designs</span>
+    </div>
+
+    <h1 class="hero-title">Profile Page <span>Redesigns</span></h1>
+
+    <p class="hero-description">
+      A collection of experimental, fully responsive UI reimaginings of the classic GitHub profile page. Built completely backend-free using native web technologies.
+    </p>
+
+    <div class="hero-links">
+      <a href="https://github.com/MMSSB/github-designs" target="_blank" class="hero-link">
+        <i class="ph ph-github-logo"></i> View on GitHub
+      </a>
+      <a href="https://mmssb.github.io" target="_blank" class="hero-link">
+      <!-- <a href="https://github.com/MMSSB" target="_blank" class="hero-link"> -->
+        <i class="ph ph-user"></i> MMS Profile
+      </a>
+      <!-- <a href="#templates" class="hero-link" style="background: transparent; border: none; color: var(--accent-primary);">
+        Explore Templates <i class="ph-bold ph-arrow-down"></i>
+      </a> -->
+    </div>
+
+    <!-- Made By MMS Badge -->
+    <div class="made-by-badge">
+        Designed & Coded by <a href="https://mmssb.github.io" target="_blank">MMS</a> 
+        <i class="ph-fill ph-heart"></i>
+    </div>
+  </section>
+
+  <!-- Right Content Section - SCROLLABLE -->
+  <section class="content-section" id="templates">
+    
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All Templates (2)</button>
+      <button class="filter-tab" data-filter="bento">Bento UI</button>
+      <button class="filter-tab" data-filter="classic">Classic Modern</button>
+    </div>
+
+    <!-- HARDCODED HTML TEMPLATE CARDS -->
+    <div id="templateCards">
+        
+      <!-- CARD 1: GitHub1 (Bento Grid) -->
+      <div class="template-card" data-type="bento" style="animation-delay: 0.1s;">
+        <div class="template-card-header">
+          <span class="template-card-badge">Bento Grid UI</span>
+          <span class="template-card-date">Updated: 2026 Layout</span>
+        </div>
+        
+        <div class="template-preview">
+          <img src="./assets/images/github1-preview.jpg" alt="Bento Dashboard Preview" 
+               onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'fallback-img\'><i class=\'ph-light ph-squares-four\'></i><span>Bento Grid UI Preview</span></div>';">
+        </div>
+        
+        <div class="template-info">
+          <div class="template-title-row">
+            <h2 class="template-name">Smart Bento Profile (github1.html)</h2>
+          </div>
+          <p class="template-description">
+            A comprehensive, data-rich Bento UI layout featuring pinned repositories, customized tech stack tags, and a highly intelligent responsive grid that adapts perfectly to desktop, tablet, and mobile screens. Includes a sticky mobile navigation bar and side-drawer.
+          </p>
+          <div class="template-actions">
+            <a href="github1.html" class="template-action-link primary" target="_blank">
+              <i class="ph ph-desktop"></i> View Live Demo
+            </a>
+            <a href="https://github.com/MMSSB/github-design/blob/main/github1.html" class="template-action-link" target="_blank">
+              <i class="ph ph-code"></i> View Source
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: GitHub (Classic Modern) -->
+      <div class="template-card" data-type="classic" style="animation-delay: 0.2s;">
+        <div class="template-card-header">
+          <span class="template-card-badge">Classic UI</span>
+          <span class="template-card-date">Updated: 2026 Layout</span>
+        </div>
+        
+        <div class="template-preview">
+          <img src="./assets/images/github-preview.jpg" alt="Classic Dashboard Preview" 
+               onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'fallback-img\'><i class=\'ph-light ph-layout\'></i><span>Classic Modern Preview</span></div>';">
+        </div>
+        
+        <div class="template-info">
+          <div class="template-title-row">
+            <h2 class="template-name">Classic Modern (github.html)</h2>
+          </div>
+          <p class="template-description">
+            A sleek, app-like interpretation of the GitHub profile featuring a centered grid layout, fixed bottom mobile navigation, modern glassmorphic search bars, and a clean repository showcase system.
+          </p>
+          <div class="template-actions">
+            <a href="github.html" class="template-action-link primary" target="_blank">
+              <i class="ph ph-desktop"></i> View Live Demo
+            </a>
+            <a href="https://github.com/MMSSB/github-design/blob/main/github.html" class="template-action-link" target="_blank">
+              <i class="ph ph-code"></i> View Source
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script>
+  // ===== Theme Switcher Logic =====
+  const themeBtn = document.getElementById('themeToggleBtn');
+  const themeDropdown = document.getElementById('themeDropdown');
+  const themeOptions = document.querySelectorAll('.theme-option');
+
+  // Toggle Dropdown
+  themeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      themeDropdown.classList.toggle('active');
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+      if (!themeBtn.contains(e.target) && !themeDropdown.contains(e.target)) {
+          themeDropdown.classList.remove('active');
+      }
+  });
+
+  // Apply Theme
+  function applyTheme(theme) {
+      if (theme === 'system') {
+          const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      } else {
+          document.documentElement.setAttribute('data-theme', theme);
+      }
+      
+      localStorage.setItem('mms-theme', theme);
+      updateThemeUI(theme);
+  }
+
+  // Update UI Elements based on active theme
+  function updateThemeUI(activeTheme) {
+      const icon = themeBtn.querySelector('i');
+      
+      if(activeTheme === 'light') icon.className = 'ph ph-sun';
+      else if(activeTheme === 'dark') icon.className = 'ph ph-moon';
+      else icon.className = 'ph ph-desktop';
+
+      themeOptions.forEach(btn => {
+          if (btn.getAttribute('data-theme-val') === activeTheme) {
+              btn.classList.add('active');
+          } else {
+              btn.classList.remove('active');
+          }
+      });
+  }
+
+  // Initialize Theme on Load
+  const savedTheme = localStorage.getItem('mms-theme') || 'system';
+  applyTheme(savedTheme);
+
+  // Click listeners for dropdown options
+  themeOptions.forEach(btn => {
+      btn.addEventListener('click', () => {
+          applyTheme(btn.getAttribute('data-theme-val'));
+          themeDropdown.classList.remove('active');
+      });
+  });
+
+  // Listen for System Preference Changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (localStorage.getItem('mms-theme') === 'system') {
+          applyTheme('system');
+      }
+  });
+
+  // ===== Scroll Progress Bar =====
+  const contentSection = document.querySelector('.content-section');
+  const scrollProgress = document.getElementById('scrollProgress');
+  
+  // Use window scroll if mobile, otherwise use content-section scroll
+  const scrollElement = window.innerWidth > 1024 ? contentSection : window;
+  
+  scrollElement.addEventListener('scroll', () => {
+      let scrollTop, scrollHeight, clientHeight;
+
+      if (window.innerWidth > 1024) {
+          scrollTop = contentSection.scrollTop;
+          scrollHeight = contentSection.scrollHeight;
+          clientHeight = contentSection.clientHeight;
+      } else {
+          scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+          scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+          clientHeight = document.documentElement.clientHeight;
+      }
+
+      const scrolled = (scrollTop / (scrollHeight - clientHeight)) * 100;
+      scrollProgress.style.width = scrolled + '%';
+  });
+
+  // ===== Filter Tabs Logic =====
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      const filter = tab.getAttribute('data-filter');
+      
+      document.querySelectorAll('.template-card').forEach(card => {
+        if (filter === 'all' || card.getAttribute('data-type') === filter) {
+          card.style.display = 'block';
+          card.style.animation = 'none';
+          card.offsetHeight; 
+          card.style.animation = null; 
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // ===== Constellation Canvas Background =====
+  (function() {
+    const canvas = document.getElementById('constellationCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, stars = [], mouse = { x: -1000, y: -1000 };
+
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      width = canvas.width = rect.width * window.devicePixelRatio;
+      height = canvas.height = rect.height * window.devicePixelRatio;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      initStars();
+    }
+
+    function initStars() {
+      stars = [];
+      const count = Math.floor((width * height) / 9000);
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * (width / window.devicePixelRatio),
+          y: Math.random() * (height / window.devicePixelRatio),
+          r: Math.random() * 1.2 + 0.3,
+          alpha: Math.random() * 0.4 + 0.1,
+          speed: Math.random() * 0.0004 + 0.0002,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function draw(time) {
+      ctx.clearRect(0, 0, width / window.devicePixelRatio, height / window.devicePixelRatio);
+
+      stars.forEach(s => {
+        const flicker = Math.sin(time * s.speed * 1000 + s.phase) * 0.3 + 0.7;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(245, 245, 245, ${s.alpha * flicker})`;
+        ctx.fill();
+      });
+
+      const maxDist = 110;
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < maxDist) {
+            const alpha = (1 - dist / maxDist) * 0.12;
+            ctx.beginPath();
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.lineTo(stars[j].x, stars[j].y);
+            ctx.strokeStyle = `rgba(139, 148, 158, ${alpha})`; 
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      stars.forEach(s => {
+        const dx = mouse.x - s.x;
+        const dy = mouse.y - s.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 140) {
+          const alpha = (1 - dist / 140) * 0.35;
+          ctx.beginPath();
+          ctx.moveTo(s.x, s.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.strokeStyle = `rgba(88, 166, 255, ${alpha})`; 
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    
+    document.addEventListener('mousemove', (e) => {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    });
+    
+    document.addEventListener('mouseleave', () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    });
+
+    resize();
+    requestAnimationFrame(draw);
+  })();
+</script>
+</body>
+</html>
