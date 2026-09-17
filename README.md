@@ -1,4 +1,7 @@
-# 🚀 GitHub Profile Redesigns
+<div align="center">
+  <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub Designs Logo" width="80" height="80"/>
+  <h1>🚀 GitHub Profile Redesigns</h1>
+</div>
 
 <div align="center">
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"/>
@@ -15,7 +18,7 @@
 <br>
 
 ## 📖 Overview
-**github-design** is a collection of modern, fully responsive UI reimaginings of the classic GitHub profile page. The goal of this project is to explore how developer portfolios could look using 2026 design trends, focusing on clean aesthetics, fluid responsiveness, and premium user experiences.
+**GitHub Designs** is a collection of modern, fully responsive UI reimaginings of the classic GitHub profile page. The goal of this project is to explore how developer portfolios could look using 2026 design trends, focusing on clean aesthetics, fluid responsiveness, and premium user experiences.
 
 ## ✨ Key Features
 
