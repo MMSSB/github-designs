@@ -1,5 +1,5 @@
 <div align="center" >
-  <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub Designs Logo" width="80" height="80" style="background-color: white;"/>
+  <img src="screenshots/logo-github.png" alt="GitHub Designs Logo" width="80" height="80" style="background-color: white;"/>
   <h1>🚀 GitHub Pages Redesigns</h1>
 </div>
 
