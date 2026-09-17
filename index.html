@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GitHub Designs | By MMS</title>
-  <link rel="shortcut icon" href="https://mmssb.github.io/github-designs/screenshots/logo-github.ico" type="image/x-icon">
-
+<link rel="shortcut icon" href="https://mmssb.github.io/github-designs/screenshots/logo-github.ico" type="image/x-icon">
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -727,7 +726,7 @@
   
   <!-- Left Hero Section - FIXED -->
   <section class="hero-section">
-    <div class="hero-logo">
+    <div class="hero-logo" >
       <div class="hero-logo-icon">
         <i class="ph-fill ph-github-logo"></i>
       </div>
@@ -744,13 +743,17 @@
       <a href="https://github.com/MMSSB/github-designs" target="_blank" class="hero-link">
         <i class="ph ph-github-logo"></i> View on GitHub
       </a>
+      
+      <!-- Live Star Button -->
+      <a href="https://github.com/MMSSB/github-designs" target="_blank" class="hero-link">
+        <i class="ph-fill ph-star" style="color: #f1e05a;"></i> 
+        Star 
+        <span id="githubStarCount" style="background: var(--badge-bg); border: 1px solid var(--border-subtle); padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 4px; display: none;"></span>
+      </a>
+      
       <a href="https://mmssb.github.io" target="_blank" class="hero-link">
-      <!-- <a href="https://github.com/MMSSB" target="_blank" class="hero-link"> -->
         <i class="ph ph-user"></i> MMS Profile
       </a>
-      <!-- <a href="#templates" class="hero-link" style="background: transparent; border: none; color: var(--accent-primary);">
-        Explore Templates <i class="ph-bold ph-arrow-down"></i>
-      </a> -->
     </div>
 
     <!-- Made By MMS Badge -->
@@ -1043,6 +1046,24 @@
 
     resize();
     requestAnimationFrame(draw);
+  })();
+
+  // ===== Live GitHub Stars Fetch =====
+  (async function fetchGitHubStars() {
+    try {
+      const response = await fetch('https://api.github.com/repos/MMSSB/github-designs');
+      if (response.ok) {
+        const data = await response.json();
+        const starBadge = document.getElementById('githubStarCount');
+        
+        if (starBadge) {
+          starBadge.textContent = data.stargazers_count;
+          starBadge.style.display = 'inline-block';
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch GitHub stars:', error);
+    }
   })();
 </script>
 </body>
