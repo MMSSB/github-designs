@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="shortcut icon" href="https://mmssb.github.io/github-designs/screenshots/logo-github.ico" type="image/x-icon">
 
     <style>
         :root {
@@ -138,6 +137,95 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        /* --- USER AVATAR DROPDOWN --- */
+        .user-avatar-wrapper {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .avatar-dropdown {
+            position: absolute;
+            bottom: 0;
+            left: calc(100% + 16px);
+            width: 260px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+            padding: 8px 0;
+            z-index: 1000;
+            cursor: default;
+            
+            /* Animation initial state */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-15px) scale(0.95);
+            transform-origin: bottom left;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .avatar-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0) scale(1);
+        }
+
+        .avatar-dropdown .dropdown-header {
+            padding: 6px 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .avatar-dropdown .dropdown-header strong {
+            color: var(--text-primary);
+            display: block;
+            font-size: 14px;
+        }
+
+        .avatar-dropdown .dropdown-divider {
+            height: 1px;
+            background: var(--border-subtle);
+            margin: 8px 0;
+        }
+
+        .avatar-dropdown .dropdown-status-wrapper {
+            padding: 0 16px;
+        }
+
+        .avatar-dropdown .dropdown-status {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill);
+            color: var(--text-secondary);
+            font-size: 13px;
+            transition: var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .avatar-dropdown .dropdown-status:hover {
+            color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .avatar-dropdown .dropdown-item {
+            display: block;
+            padding: 6px 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: background var(--transition-fast), color var(--transition-fast);
+        }
+
+        .avatar-dropdown .dropdown-item:hover {
+            background: var(--accent-blue);
+            color: #ffffff;
         }
 
         /* --- DESKTOP SIDEBAR EXPANDED --- */
@@ -948,8 +1036,43 @@
         
         <div class="spacer"></div>
         
-        <div class="user-avatar">
-            <img src="./assets/images/mms.jpg" alt="MMS" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'">
+        <div class="user-avatar-wrapper" id="avatarWrapper">
+            <div class="user-avatar">
+                <img src="./assets/images/mms.jpg" alt="MMS" onerror="this.src='https://avatars.githubusercontent.com/MMSSB'">
+            </div>
+            
+            <!-- Modern GitHub Submenu -->
+            <div class="avatar-dropdown" id="avatarDropdown">
+                <div class="dropdown-header">
+                    Signed in as <strong>MMSSB</strong>
+                </div>
+                
+                <div class="dropdown-divider"></div>
+                
+                <div class="dropdown-status-wrapper">
+                    <button class="dropdown-status">
+                        <i class="ph ph-smiley"></i> Set status
+                    </button>
+                </div>
+                
+                <div class="dropdown-divider"></div>
+                
+                <a href="#" class="dropdown-item">Your profile</a>
+                <a href="#" class="dropdown-item">Your repositories</a>
+                <a href="#" class="dropdown-item">Your projects</a>
+                <a href="#" class="dropdown-item">Your stars</a>
+                <a href="#" class="dropdown-item">Your gists</a>
+                
+                <div class="dropdown-divider"></div>
+                
+                <a href="#" class="dropdown-item">Upgrade</a>
+                <a href="#" class="dropdown-item">Feature preview</a>
+                <a href="#" class="dropdown-item">Settings</a>
+                
+                <div class="dropdown-divider"></div>
+                
+                <a href="#" class="dropdown-item">Sign out</a>
+            </div>
         </div>
     </nav>
 
@@ -1342,6 +1465,24 @@
                     e.currentTarget.classList.add('active');
                 });
             });
+
+            /* --- Avatar Dropdown Toggle --- */
+            const avatarWrapper = document.getElementById('avatarWrapper');
+            const avatarDropdown = document.getElementById('avatarDropdown');
+
+            if (avatarWrapper && avatarDropdown) {
+                avatarWrapper.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    avatarDropdown.classList.toggle('active');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!avatarWrapper.contains(e.target)) {
+                        avatarDropdown.classList.remove('active');
+                    }
+                });
+            }
         });
     </script>
 </body>
