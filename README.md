@@ -1,6 +1,6 @@
-<div align="center">
+<div align="center" style="background-color: white;">
   <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub Designs Logo" width="80" height="80"/>
-  <h1>🚀 GitHub Profile Redesigns</h1>
+  <h1>🚀 GitHub Pages Redesigns</h1>
 </div>
 
 <div align="center">
